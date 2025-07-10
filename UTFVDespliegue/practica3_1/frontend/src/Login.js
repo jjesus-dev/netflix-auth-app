@@ -6,26 +6,32 @@ const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [token, setToken] = useState('');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const url = isRegistering
             ? 'http://localhost:8000/api/register/' // endpoint para registro
             : 'http://localhost:8000/api/login/'; // endpoint para login
+
         try {
             const response = await axios.post(url, {
                 username,
                 password
             });
+
             if (isRegistering) {
                 setMessage('Registro exitoso. Ahora puedes iniciar sesión.');
             } else {
                 setMessage('Inicio de sesión exitoso.');
                 console.log('Token recibido:', response.data);
+                setToken(response.data.access);
             }
         } catch (error) {
             setMessage('Hubo un error. Verifica tus datos.');
         }
     };
+
     return (
         <div>
             <h1 className="utfv-logo">UTFVFLIX</h1>
